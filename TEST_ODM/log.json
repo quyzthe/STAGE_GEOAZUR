@@ -1,0 +1,423 @@
+{
+    "odmVersion": "3.6.0",
+    "memory": {
+        "total": 7531,
+        "available": 1110
+    },
+    "cpus": 12,
+    "images": 7,
+    "options": {
+        "3d_tiles": false,
+        "align": null,
+        "auto_boundary": false,
+        "auto_boundary_distance": 0,
+        "bg_removal": false,
+        "boundary": {},
+        "build_overviews": false,
+        "camera_lens": "auto",
+        "cameras": {},
+        "cog": false,
+        "copy_to": null,
+        "crop": 3,
+        "dem_decimation": 1,
+        "dem_euclidean_map": false,
+        "dem_gapfill_steps": 3,
+        "dem_resolution": 5,
+        "dsm": false,
+        "dtm": false,
+        "end_with": "odm_postprocess",
+        "fast_orthophoto": false,
+        "feature_quality": "low",
+        "feature_type": "dspsift",
+        "force_gps": false,
+        "gcp": null,
+        "geo": null,
+        "gltf": false,
+        "gps_accuracy": 3,
+        "gps_z_offset": 0,
+        "ignore_gsd": false,
+        "matcher_neighbors": 0,
+        "matcher_order": 0,
+        "matcher_type": "flann",
+        "max_concurrency": 2,
+        "merge": "all",
+        "merge_skip_blending": false,
+        "mesh_octree_depth": 11,
+        "mesh_size": 200000,
+        "min_num_features": 10000,
+        "name": "TEST_ODM",
+        "no_gpu": false,
+        "optimize_disk_space": false,
+        "orthophoto_compression": "DEFLATE",
+        "orthophoto_cutline": false,
+        "orthophoto_kmz": false,
+        "orthophoto_no_tiled": false,
+        "orthophoto_png": false,
+        "orthophoto_resolution": 5,
+        "pc_classify": false,
+        "pc_copc": false,
+        "pc_csv": false,
+        "pc_ept": false,
+        "pc_filter": 5,
+        "pc_las": false,
+        "pc_quality": "medium",
+        "pc_rectify": false,
+        "pc_sample": 0,
+        "pc_skip_geometric": false,
+        "primary_band": "auto",
+        "project_path": "D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM",
+        "radiometric_calibration": "none",
+        "rerun": null,
+        "rerun_all": false,
+        "rerun_from": null,
+        "rolling_shutter": false,
+        "rolling_shutter_readout": 0,
+        "sfm_algorithm": "incremental",
+        "sfm_no_partial": false,
+        "skip_3dmodel": false,
+        "skip_band_alignment": false,
+        "skip_orthophoto": false,
+        "skip_report": false,
+        "sky_removal": false,
+        "sm_cluster": null,
+        "sm_no_align": false,
+        "smrf_scalar": 1.25,
+        "smrf_slope": 0.15,
+        "smrf_threshold": 0.5,
+        "smrf_window": 18.0,
+        "split": 999999,
+        "split_image_groups": null,
+        "split_overlap": 150,
+        "texturing_keep_unseen_faces": false,
+        "texturing_single_material": false,
+        "texturing_skip_global_seam_leveling": false,
+        "tiles": false,
+        "use_3dmesh": false,
+        "use_exif": false,
+        "use_fixed_camera_params": false,
+        "use_hybrid_bundle_adjustment": false,
+        "video_limit": 500,
+        "video_resolution": 4000
+    },
+    "startTime": "2026-03-26T16:29:25.001372",
+    "stages": [
+        {
+            "name": "dataset",
+            "startTime": "2026-03-26T16:29:31.160863",
+            "messages": [
+                {
+                    "message": "Running dataset stage",
+                    "type": "info"
+                },
+                {
+                    "message": "Loading dataset from: D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\images",
+                    "type": "info"
+                },
+                {
+                    "message": "Loading 7 images",
+                    "type": "info"
+                },
+                {
+                    "message": "Wrote images database: D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\images.json",
+                    "type": "info"
+                },
+                {
+                    "message": "Found 7 usable images",
+                    "type": "info"
+                },
+                {
+                    "message": "Finished dataset stage",
+                    "type": "info"
+                }
+            ]
+        },
+        {
+            "name": "split",
+            "startTime": "2026-03-26T16:29:31.248610",
+            "messages": [
+                {
+                    "message": "Running split stage",
+                    "type": "info"
+                },
+                {
+                    "message": "Normal dataset, will process all at once.",
+                    "type": "info"
+                },
+                {
+                    "message": "Finished split stage",
+                    "type": "info"
+                }
+            ]
+        },
+        {
+            "name": "merge",
+            "startTime": "2026-03-26T16:29:31.250175",
+            "messages": [
+                {
+                    "message": "Running merge stage",
+                    "type": "info"
+                },
+                {
+                    "message": "Normal dataset, nothing to merge.",
+                    "type": "info"
+                },
+                {
+                    "message": "Finished merge stage",
+                    "type": "info"
+                }
+            ]
+        },
+        {
+            "name": "opensfm",
+            "startTime": "2026-03-26T16:29:31.251736",
+            "messages": [
+                {
+                    "message": "Running opensfm stage",
+                    "type": "info"
+                },
+                {
+                    "message": "Maximum photo dimensions: 4032px",
+                    "type": "info"
+                },
+                {
+                    "message": "Photo dimensions for feature extraction: 504px",
+                    "type": "info"
+                },
+                {
+                    "message": "Altitude data detected, enabling it for GPS alignment",
+                    "type": "info"
+                },
+                {
+                    "message": [
+                        "use_exif_size: no",
+                        "flann_algorithm: KDTREE",
+                        "feature_process_size: 504",
+                        "feature_min_frames: 10000",
+                        "processes: 2",
+                        "matching_gps_neighbors: 0",
+                        "matching_gps_distance: 0",
+                        "matching_graph_rounds: 50",
+                        "optimize_camera_parameters: yes",
+                        "reconstruction_algorithm: incremental",
+                        "undistorted_image_format: tif",
+                        "bundle_outlier_filtering_type: AUTO",
+                        "sift_peak_threshold: 0.066",
+                        "align_orientation_prior: vertical",
+                        "triangulation_type: ROBUST",
+                        "retriangulation_ratio: 2",
+                        "matcher_type: FLANN",
+                        "feature_type: DSPSIFT",
+                        "use_altitude_tag: yes",
+                        "align_method: auto",
+                        "local_bundle_radius: 0"
+                    ],
+                    "type": "info"
+                },
+                {
+                    "message": "Wrote reference_lla.json",
+                    "type": "info"
+                },
+                {
+                    "message": "running \"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" detect_features \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+                    "type": "info"
+                },
+                {
+                    "message": "running \"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" match_features \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+                    "type": "info"
+                },
+                {
+                    "message": "running \"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" create_tracks \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+                    "type": "info"
+                },
+                {
+                    "message": "running \"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" reconstruct \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+                    "type": "info"
+                },
+                {
+                    "message": "The program could not process this dataset using the current settings. Check that the images have enough overlap, that there are enough recognizable features and that the images are in focus. The program will now exit.",
+                    "type": "error"
+                }
+            ],
+            "endTime": "2026-03-26T16:32:24.800074",
+            "totalTime": 173.55
+        }
+    ],
+    "processes": [
+        {
+            "command": "\"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" detect_features \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+            "exitCode": 0,
+            "output": [
+                "2026-03-26 16:29:38,143 DEBUG: Found 2297 points in 0.05622124671936035s",
+                "2026-03-26 16:29:38,143 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,143 DEBUG: Computing sift with threshold 0.00022608216779159557",
+                "2026-03-26 16:29:38,162 DEBUG: Found 2211 points in 0.056755781173706055s",
+                "2026-03-26 16:29:38,162 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,162 DEBUG: Computing sift with threshold 0.0011445409744449526",
+                "2026-03-26 16:29:38,206 DEBUG: Found 2297 points in 0.062299251556396484s",
+                "2026-03-26 16:29:38,206 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,206 DEBUG: Computing sift with threshold 0.00015072144519439704",
+                "2026-03-26 16:29:38,226 DEBUG: Found 2214 points in 0.06336712837219238s",
+                "2026-03-26 16:29:38,226 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,226 DEBUG: Computing sift with threshold 0.000763027316296635",
+                "2026-03-26 16:29:38,265 DEBUG: Found 2297 points in 0.05886721611022949s",
+                "2026-03-26 16:29:38,265 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,265 DEBUG: Computing sift with threshold 0.00010048096346293136",
+                "2026-03-26 16:29:38,282 DEBUG: Found 2214 points in 0.05562639236450195s",
+                "2026-03-26 16:29:38,282 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,282 DEBUG: Computing sift with threshold 0.00050868487753109",
+                "2026-03-26 16:29:38,322 DEBUG: Found 2297 points in 0.05744767189025879s",
+                "2026-03-26 16:29:38,322 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,322 DEBUG: Computing sift with threshold 6.698730897528758e-05",
+                "2026-03-26 16:29:38,336 DEBUG: Found 2214 points in 0.054322004318237305s",
+                "2026-03-26 16:29:38,336 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,336 DEBUG: Computing sift with threshold 0.00033912325168739335",
+                "2026-03-26 16:29:38,377 DEBUG: Found 2297 points in 0.05442166328430176s",
+                "2026-03-26 16:29:38,377 DEBUG: done",
+                "2026-03-26 16:29:38,394 DEBUG: Found 2214 points in 0.057642459869384766s",
+                "2026-03-26 16:29:38,394 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,394 DEBUG: Computing sift with threshold 0.00022608216779159557",
+                "2026-03-26 16:29:38,453 DEBUG: Found 2214 points in 0.058156490325927734s",
+                "2026-03-26 16:29:38,453 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,453 DEBUG: Computing sift with threshold 0.00015072144519439704",
+                "2026-03-26 16:29:38,482 DEBUG: No segmentation for DJI_20250701180513_0007_V.JPG, no features masked.",
+                "2026-03-26 16:29:38,505 DEBUG: Found 2214 points in 0.05258774757385254s",
+                "2026-03-26 16:29:38,505 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,505 DEBUG: Computing sift with threshold 0.00010048096346293136",
+                "2026-03-26 16:29:38,556 DEBUG: Found 2214 points in 0.05026531219482422s",
+                "2026-03-26 16:29:38,556 DEBUG: reducing threshold",
+                "2026-03-26 16:29:38,557 DEBUG: Computing sift with threshold 6.698730897528758e-05",
+                "2026-03-26 16:29:38,605 DEBUG: Found 2214 points in 0.04795122146606445s",
+                "2026-03-26 16:29:38,605 DEBUG: done",
+                "2026-03-26 16:29:38,690 DEBUG: No segmentation for DJI_20250701180514_0008_V.JPG, no features masked.",
+                "Check feature type: DSPSIFT",
+                "Check feature type: DSPSIFT",
+                "Check feature type: DSPSIFT",
+                "Check feature type: DSPSIFT",
+                "Check feature type: DSPSIFT",
+                "Check feature type: DSPSIFT",
+                "Check feature type: DSPSIFT"
+            ]
+        },
+        {
+            "command": "\"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" match_features \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+            "exitCode": 0,
+            "output": [
+                "2026-03-26 16:29:41,499 INFO: Altitude for orientation based matching 2023.720850435683",
+                "2026-03-26 16:29:41,544 INFO: Matching 21 image pairs",
+                "2026-03-26 16:29:41,544 INFO: Computing pair matching with 1 processes",
+                "2026-03-26 16:29:41,571 DEBUG: No segmentation for DJI_20250701180509_0003_V.JPG, no features masked.",
+                "2026-03-26 16:29:41,589 DEBUG: No segmentation for DJI_20250701180513_0007_V.JPG, no features masked.",
+                "2026-03-26 16:29:41,680 DEBUG: Matching DJI_20250701180509_0003_V.JPG and DJI_20250701180513_0007_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.133 Matches: FAILED",
+                "2026-03-26 16:29:41,699 DEBUG: No segmentation for DJI_20250701180514_0008_V.JPG, no features masked.",
+                "2026-03-26 16:29:41,757 DEBUG: Matching DJI_20250701180509_0003_V.JPG and DJI_20250701180514_0008_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.077 Matches: FAILED",
+                "2026-03-26 16:29:41,776 DEBUG: No segmentation for DJI_20250701180512_0006_V.JPG, no features masked.",
+                "2026-03-26 16:29:41,795 DEBUG: No segmentation for DJI_20250701180510_0004_V.JPG, no features masked.",
+                "2026-03-26 16:29:41,912 DEBUG: Matching DJI_20250701180512_0006_V.JPG and DJI_20250701180510_0004_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.138 T-robust: 0.016 T-total: 0.154 Matches: 65 Robust: 57 Success: True",
+                "2026-03-26 16:29:41,932 DEBUG: No segmentation for DJI_20250701180509_0001_V.JPG, no features masked.",
+                "2026-03-26 16:29:42,005 DEBUG: Matching DJI_20250701180509_0003_V.JPG and DJI_20250701180509_0001_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.091 T-robust: 0.001 T-total: 0.093 Matches: 742 Robust: 738 Success: True",
+                "2026-03-26 16:29:42,032 DEBUG: Matching DJI_20250701180509_0001_V.JPG and DJI_20250701180512_0006_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.033 T-robust: 0.001 T-total: 0.033 Matches: 45 Robust: 37 Success: True",
+                "2026-03-26 16:29:42,056 DEBUG: No segmentation for DJI_20250701180511_0005_V.JPG, no features masked.",
+                "2026-03-26 16:29:42,113 DEBUG: Matching DJI_20250701180511_0005_V.JPG and DJI_20250701180514_0008_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.075 Matches: FAILED",
+                "2026-03-26 16:29:42,150 DEBUG: Matching DJI_20250701180513_0007_V.JPG and DJI_20250701180514_0008_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.036 T-robust: 0.001 T-total: 0.037 Matches: 387 Robust: 384 Success: True",
+                "2026-03-26 16:29:42,189 DEBUG: Matching DJI_20250701180511_0005_V.JPG and DJI_20250701180509_0001_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.035 T-robust: 0.004 T-total: 0.039 Matches: 387 Robust: 368 Success: True",
+                "2026-03-26 16:29:42,232 DEBUG: Matching DJI_20250701180513_0007_V.JPG and DJI_20250701180509_0001_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.042 Matches: FAILED",
+                "2026-03-26 16:29:42,265 DEBUG: Matching DJI_20250701180509_0003_V.JPG and DJI_20250701180510_0004_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.034 T-robust: 0.001 T-total: 0.036 Matches: 594 Robust: 582 Success: True",
+                "2026-03-26 16:29:42,300 DEBUG: Matching DJI_20250701180509_0001_V.JPG and DJI_20250701180514_0008_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.031 Matches: FAILED",
+                "2026-03-26 16:29:42,332 DEBUG: Matching DJI_20250701180513_0007_V.JPG and DJI_20250701180510_0004_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.038 Matches: FAILED",
+                "2026-03-26 16:29:42,374 DEBUG: Matching DJI_20250701180511_0005_V.JPG and DJI_20250701180510_0004_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.035 T-robust: 0.001 T-total: 0.036 Matches: 491 Robust: 472 Success: True",
+                "2026-03-26 16:29:42,411 DEBUG: Matching DJI_20250701180509_0003_V.JPG and DJI_20250701180511_0005_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.035 T-robust: 0.001 T-total: 0.037 Matches: 418 Robust: 400 Success: True",
+                "2026-03-26 16:29:42,442 DEBUG: Matching DJI_20250701180512_0006_V.JPG and DJI_20250701180514_0008_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.032 T-robust: 0.001 T-total: 0.032 Matches: 193 Robust: 187 Success: True",
+                "2026-03-26 16:29:42,484 DEBUG: Matching DJI_20250701180509_0003_V.JPG and DJI_20250701180512_0006_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.039 T-robust: 0.001 T-total: 0.039 Matches: 43 Robust: 36 Success: True",
+                "2026-03-26 16:29:42,515 DEBUG: Matching DJI_20250701180509_0001_V.JPG and DJI_20250701180510_0004_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.034 T-robust: 0.001 T-total: 0.035 Matches: 555 Robust: 544 Success: True",
+                "2026-03-26 16:29:42,558 DEBUG: Matching DJI_20250701180513_0007_V.JPG and DJI_20250701180511_0005_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.040 Matches: FAILED",
+                "2026-03-26 16:29:42,581 DEBUG: Matching DJI_20250701180510_0004_V.JPG and DJI_20250701180514_0008_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.031 Matches: FAILED",
+                "2026-03-26 16:29:42,625 DEBUG: Matching DJI_20250701180511_0005_V.JPG and DJI_20250701180512_0006_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.035 T-robust: 0.001 T-total: 0.036 Matches: 126 Robust: 109 Success: True",
+                "2026-03-26 16:29:42,664 DEBUG: Matching DJI_20250701180513_0007_V.JPG and DJI_20250701180512_0006_V.JPG.  Matcher: FLANN (symmetric) T-desc: 0.038 T-robust: 0.001 T-total: 0.039 Matches: 192 Robust: 187 Success: True",
+                "2026-03-26 16:29:42,664 INFO: Matched 21 pairs (brown-brown: 21) in 1.1196955000050366 seconds (0.053318857143278275 seconds/pair)."
+            ]
+        },
+        {
+            "command": "\"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" create_tracks \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+            "exitCode": 0,
+            "output": [
+                "2026-03-26 16:29:45,234 INFO: reading features",
+                "2026-03-26 16:29:45,379 DEBUG: Merging features onto tracks",
+                "2026-03-26 16:29:45,438 INFO: 1776 tracks, 4652 observations, 0 depth priors added to TracksManager"
+            ]
+        },
+        {
+            "command": "\"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\opensfm\" reconstruct \"D:\\Python_Projects\\STAGE_GEOAZUR\\TEST_ODM\\opensfm\"",
+            "exitCode": 0,
+            "output": [
+                "2026-03-26 16:29:48,230 INFO: Starting incremental reconstruction",
+                "2026-03-26 16:29:48,232 INFO: Loaded 0 ground control points.",
+                "2026-03-26 16:32:08,793 INFO: Estimated reconstructability of 13 image pairs.",
+                "2026-03-26 16:32:08,793 INFO: Starting reconstruction with DJI_20250701180509_0003_V.JPG and DJI_20250701180510_0004_V.JPG",
+                "2026-03-26 16:32:23,631 INFO: Triangulated: 308",
+                "2026-03-26 16:32:24,232 INFO: Ran GLOBAL bundle in 0.00 secs.with 2/308/616 (2.00) shots/points/proj. (avg. length)",
+                "2026-03-26 16:32:24,232 DEBUG: Bundle stub: GPS constraints applied.",
+                "D:\\Python_Projects\\STAGE_GEOAZUR\\myenv\\Lib\\site-packages\\numpy\\_core\\fromnumeric.py:3824: RuntimeWarning: Mean of empty slice",
+                "return _methods._mean(a, axis=axis, dtype=dtype,",
+                "D:\\Python_Projects\\STAGE_GEOAZUR\\myenv\\Lib\\site-packages\\numpy\\_core\\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide",
+                "ret = ret.dtype.type(ret / rcount)",
+                "Traceback (most recent call last):",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\\\opensfm_main.py\", line 35, in <module>",
+                "main()",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\SuperBuild\\install\\bin\\opensfm\\bin\\\\opensfm_main.py\", line 27, in main",
+                "commands.command_runner(",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\commands\\command_runner.py\", line 45, in command_runner",
+                "command.run(data, args)",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\commands\\command.py\", line 16, in run",
+                "self.run_impl(data, args)",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\commands\\reconstruct.py\", line 16, in run_impl",
+                "reconstruct.run_dataset(dataset, args.algorithm)",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\actions\\reconstruct.py\", line 14, in run_dataset",
+                "report, reconstructions = reconstruction.incremental_reconstruction(",
+                "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\reconstruction.py\", line 1716, in incremental_reconstruction",
+                "reconstruction, rec_report[\"grow\"] = grow_reconstruction(",
+                "^^^^^^^^^^^^^^^^^^^^",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\reconstruction.py\", line 1430, in grow_reconstruction",
+                "remove_outliers(reconstruction, config)",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\reconstruction.py\", line 1225, in remove_outliers",
+                "threshold_sqr = get_actual_threshold(config, reconstruction.points) ** 2",
+                "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\reconstruction.py\", line 1208, in get_actual_threshold",
+                "mean, std = get_error_distribution(points)",
+                "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myOSfM\\reconstruction.py\", line 1196, in get_error_distribution",
+                "np.linalg.norm(np.array(all_errors) - robust_mean, axis=1)",
+                "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myenv\\Lib\\site-packages\\numpy\\linalg\\_linalg.py\", line 2804, in norm",
+                "return sqrt(add.reduce(s, axis=axis, keepdims=keepdims))",
+                "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+                "numpy.exceptions.AxisError: axis 1 is out of bounds for array of dimension 1"
+            ]
+        }
+    ],
+    "success": false,
+    "error": {
+        "code": 1,
+        "message": "The program could not process this dataset using the current settings. Check that the images have enough overlap, that there are enough recognizable features and that the images are in focus. The program will now exit."
+    },
+    "stackTrace": [
+        "Traceback (most recent call last):",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\ODM_stages\\odm_app.py\", line 83, in execute",
+        "self.first_stage.run()",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myODM\\types.py\", line 467, in run",
+        "self.next_stage.run(outputs)",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myODM\\types.py\", line 467, in run",
+        "self.next_stage.run(outputs)",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myODM\\types.py\", line 467, in run",
+        "self.next_stage.run(outputs)",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myODM\\types.py\", line 445, in run",
+        "self.process(self.args, outputs)",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\ODM_stages\\run_opensfm.py\", line 52, in process",
+        "octx.reconstruct(args.rolling_shutter, reconstruction.is_georeferenced() and (not args.sfm_no_partial), self.rerun())",
+        "File \"D:\\Python_Projects\\STAGE_GEOAZUR\\myODM\\osfm.py\", line 70, in reconstruct",
+        "raise system.ExitException(\"The program could not process this dataset using the current settings. \"",
+        "myODM.system.ExitException: The program could not process this dataset using the current settings. Check that the images have enough overlap, that there are enough recognizable features and that the images are in focus. The program will now exit.",
+        ""
+    ],
+    "endTime": "2026-03-26T16:32:24.800074",
+    "totalTime": 179.8
+}

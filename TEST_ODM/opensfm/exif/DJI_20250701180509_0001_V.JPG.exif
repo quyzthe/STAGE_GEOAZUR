@@ -1,0 +1,27 @@
+{
+    "make": "DJI",
+    "model": "M4T",
+    "width": 4032,
+    "height": 3024,
+    "projection_type": "brown",
+    "focal_ratio": 0.6666666666666666,
+    "orientation": 1,
+    "capture_time": 1751393109.0,
+    "gps": {
+        "latitude": 43.795107861111106,
+        "longitude": 7.204582333333334,
+        "altitude": 183.641,
+        "dop": 0.32222
+    },
+    "camera": "v2 dji m4t 4032 3024 brown 0.6666",
+    "opk": {
+        "omega": -180.0,
+        "phi": 3.4811436839181346e-15,
+        "kappa": 135.79541782672746
+    },
+    "speed": [
+        0.0,
+        0.2,
+        0.0
+    ]
+}
