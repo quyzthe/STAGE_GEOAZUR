@@ -1276,19 +1276,19 @@ def cameras_to_json(cameras):
 #     return obj
 
 
-def bias_to_json(bias):
-    return {
-        "rotation": list(bias.rotation),
-        "translation": list(bias.translation),
-        "scale": bias.scale,
-    }
-
-# def bias_to_json(bias: pygeometry.Similarity) -> Dict[str, Any]:
+# def bias_to_json(bias):
 #     return {
 #         "rotation": list(bias.rotation),
 #         "translation": list(bias.translation),
 #         "scale": bias.scale,
 #     }
+
+def bias_to_json(bias: pygeometry.Similarity) -> Dict[str, Any]:
+    return {
+        "rotation": list(bias.rotation),
+        "translation": list(bias.translation),
+        "scale": bias.scale,
+    }
 
 
 def rig_cameras_to_json(

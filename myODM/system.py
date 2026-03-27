@@ -151,44 +151,44 @@ def run(cmd, env_paths=[context.superbuild_bin_path], env_vars={}, packages_path
     t_start = time.time()
 
     p = subprocess.Popen(cmd, shell=True, env=env, start_new_session=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    # print(f"[DEBUG] subprocess PID = {p.pid}")
-    # running_subprocesses.append(p)
-    # print(f"[DEBUG] running_subprocesses count = {len(running_subprocesses)}")
+    print(f"[DEBUG] subprocess PID = {p.pid}")
+    running_subprocesses.append(p)
+    print(f"[DEBUG] running_subprocesses count = {len(running_subprocesses)}")
 
-    # lines = deque()
-    # line_count = 0
-    # for line in io.TextIOWrapper(p.stdout):
+    lines = deque()
+    line_count = 0
+    for line in io.TextIOWrapper(p.stdout):
 
-    #     # print(line, end="")
-    #     line_count += 1
-    #     lines.append(line.strip())
-    #     # print(f"Number of lines: {len(lines)}")
-    #     # print(f"What is lines? {line}")
-    #     if len(lines) == 50:
-    #         lines.popleft()
+        # print(line, end="")
+        line_count += 1
+        lines.append(line.strip())
+        # print(f"Number of lines: {len(lines)}")W
+        # print(f"What is lines? {line}")
+        if len(lines) == 50:
+            lines.popleft()
 
-    # print(f"[DEBUG] subprocess stdout finished, total lines = {line_count}")
+    print(f"[DEBUG] subprocess stdout finished, total lines = {line_count}")
 
-    # retcode = p.wait()
-    # t_end = time.time()
+    retcode = p.wait()
+    t_end = time.time()
 
-    # print(f"[DEBUG] retcode  = {retcode}")
-    # print(f"[DEBUG] duration = {t_end - t_start:.2f}s")
-    # for i, l in enumerate(lines):
-    #     print(f"[DEBUG]   [{i}] {l}")
+    print(f"[DEBUG] retcode  = {retcode}")
+    print(f"[DEBUG] duration = {t_end - t_start:.2f}s")
+    for i, l in enumerate(lines):
+        print(f"[DEBUG]   [{i}] {l}")
 
-    # if not quiet:
-    #     log.logger.log_json_process(cmd, retcode, list(lines))
+    if not quiet:
+        log.logger.log_json_process(cmd, retcode, list(lines))
 
-    # running_subprocesses.remove(p)
-    # print(f"[DEBUG] running_subprocesses count after remove = {len(running_subprocesses)}")
+    running_subprocesses.remove(p)
+    print(f"[DEBUG] running_subprocesses count after remove = {len(running_subprocesses)}")
 
-    # if retcode < 0:
-    #     print(f"[DEBUG] ERROR: process killed by signal {-retcode}")
-    #     raise SubprocessException("Child was terminated by signal {}".format(-retcode), -retcode)
-    # elif retcode > 0:
-    #     print(f"[DEBUG] ERROR: process returned non-zero code {retcode}")
-    #     raise SubprocessException("Child returned {}".format(retcode), retcode)
+    if retcode < 0:
+        print(f"[DEBUG] ERROR: process killed by signal {-retcode}")
+        raise SubprocessException("Child was terminated by signal {}".format(-retcode), -retcode)
+    elif retcode > 0:
+        print(f"[DEBUG] ERROR: process returned non-zero code {retcode}")
+        raise SubprocessException("Child returned {}".format(retcode), retcode)
 
 def now():
     """Return the current time"""

@@ -1193,7 +1193,7 @@ def get_error_distribution(points: Dict[str, pymap.Landmark]) -> Tuple[float, fl
         all_errors += track.reprojection_errors.values()
     robust_mean = np.median(all_errors, axis=0)
     robust_std = 1.486 * np.median(
-        np.linalg.norm(np.array(all_errors) - robust_mean, axis=1)
+        np.linalg.norm(np.atleast_2d(np.array(all_errors)) - np.atleast_1d(robust_mean), axis=1)
     )
     return robust_mean, robust_std
 
