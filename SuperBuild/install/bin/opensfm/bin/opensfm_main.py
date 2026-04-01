@@ -23,6 +23,7 @@ def create_default_dataset_context(
 
 
 def main() -> None:
+    print(f"--------------------- Running open sfm main({sys.argv[1]}) ---------------------")
 
     commands.command_runner(
         commands.opensfm_commands,

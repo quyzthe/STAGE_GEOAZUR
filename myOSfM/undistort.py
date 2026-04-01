@@ -243,7 +243,7 @@ def get_shot_with_different_camera(
     image_format: str,
 ) -> pymap.Shot:
     new_shot_id = add_image_format_extension(shot.id, image_format)
-    new_shot = urec.create_shot(new_shot_id, shot.camera.id, shot.pose)
+    new_shot = urec.create_shot(new_shot_id, shot.camera.id, shot.pose, rig_camera_id=None, rig_instance_id=None)
     new_shot.metadata = shot.metadata
     return new_shot
 

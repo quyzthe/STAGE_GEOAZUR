@@ -150,45 +150,55 @@ def run(cmd, env_paths=[context.superbuild_bin_path], env_vars={}, packages_path
     import time
     t_start = time.time()
 
-    p = subprocess.Popen(cmd, shell=True, env=env, start_new_session=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print(f"[DEBUG] subprocess PID = {p.pid}")
-    running_subprocesses.append(p)
-    print(f"[DEBUG] running_subprocesses count = {len(running_subprocesses)}")
+    # p = subprocess.Popen(cmd, shell=True, env=env, start_new_session=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    
+    p = subprocess.Popen(
+        cmd,
+        shell=True,
+        env=env,
+        start_new_session=True
+    )
 
-    lines = deque()
-    line_count = 0
-    for line in io.TextIOWrapper(p.stdout):
+    p.wait()
+    
+    # print(f"[DEBUG] subprocess PID = {p.pid}")
+    # running_subprocesses.append(p)
+    # print(f"[DEBUG] running_subprocesses count = {len(running_subprocesses)}")
 
-        # print(line, end="")
-        line_count += 1
-        lines.append(line.strip())
-        # print(f"Number of lines: {len(lines)}")W
-        # print(f"What is lines? {line}")
-        if len(lines) == 50:
-            lines.popleft()
+    # lines = deque()
+    # line_count = 0
+    # for line in io.TextIOWrapper(p.stdout):
 
-    print(f"[DEBUG] subprocess stdout finished, total lines = {line_count}")
+    #     # print(line, end="")
+    #     line_count += 1
+    #     lines.append(line.strip())
+    #     # print(f"Number of lines: {len(lines)}")W
+    #     # print(f"What is lines? {line}")
+    #     if len(lines) == 50:
+    #         lines.popleft()
 
-    retcode = p.wait()
-    t_end = time.time()
+    # print(f"[DEBUG] subprocess stdout finished, total lines = {line_count}")
 
-    print(f"[DEBUG] retcode  = {retcode}")
-    print(f"[DEBUG] duration = {t_end - t_start:.2f}s")
-    for i, l in enumerate(lines):
-        print(f"[DEBUG]   [{i}] {l}")
+    # retcode = p.wait()
+    # t_end = time.time()
 
-    if not quiet:
-        log.logger.log_json_process(cmd, retcode, list(lines))
+    # print(f"[DEBUG] retcode  = {retcode}")
+    # print(f"[DEBUG] duration = {t_end - t_start:.2f}s")
+    # for i, l in enumerate(lines):
+    #     print(f"[DEBUG]   [{i}] {l}")
 
-    running_subprocesses.remove(p)
-    print(f"[DEBUG] running_subprocesses count after remove = {len(running_subprocesses)}")
+    # if not quiet:
+    #     log.logger.log_json_process(cmd, retcode, list(lines))
 
-    if retcode < 0:
-        print(f"[DEBUG] ERROR: process killed by signal {-retcode}")
-        raise SubprocessException("Child was terminated by signal {}".format(-retcode), -retcode)
-    elif retcode > 0:
-        print(f"[DEBUG] ERROR: process returned non-zero code {retcode}")
-        raise SubprocessException("Child returned {}".format(retcode), retcode)
+    # running_subprocesses.remove(p)
+    # print(f"[DEBUG] running_subprocesses count after remove = {len(running_subprocesses)}")
+
+    # if retcode < 0:
+    #     print(f"[DEBUG] ERROR: process killed by signal {-retcode}")
+    #     raise SubprocessException("Child was terminated by signal {}".format(-retcode), -retcode)
+    # elif retcode > 0:
+    #     print(f"[DEBUG] ERROR: process returned non-zero code {retcode}")
+    #     raise SubprocessException("Child returned {}".format(retcode), retcode)
 
 def now():
     """Return the current time"""

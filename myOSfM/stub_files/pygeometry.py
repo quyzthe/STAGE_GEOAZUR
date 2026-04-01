@@ -391,6 +391,74 @@ class Camera:
     # Coordinate conversion helpers
     # ------------------------------------------------------------------ #
 
+
+    def bearing(self, point2d):
+        """
+        Back-project a 2D normalized image point to a unit bearing vector.
+        Mirrors C++ Camera::Bearing() dispatch.
+        """
+        import numpy as _np
+        x, y = float(point2d[0]), float(point2d[1])
+        pt = self.projection_type
+
+        if self.projection_type in ("perspective",):
+            f = float(self.focal)
+            b = _np.array([x / f, y / f, 1.0], dtype=_np.float64)
+
+        elif self.projection_type == "brown":
+            f  = float(self.focal)
+            ar = float(getattr(self, "aspect_ratio", 1.0))
+            cx = float(self.principal_point[0]) if hasattr(self, "principal_point") else 0.0
+            cy = float(self.principal_point[1]) if hasattr(self, "principal_point") else 0.0
+            xn = (x - cx) / f
+            yn = (y - cy) / (f * ar)
+            b = _np.array([xn, yn, 1.0], dtype=_np.float64)
+
+        elif self.projection_type in ("fisheye", "fisheye_opencv",
+                                       "fisheye62", "fisheye624"):
+            f = float(self.focal)
+            r = _np.sqrt(x * x + y * y)
+            if r < 1e-10:
+                b = _np.array([0.0, 0.0, 1.0], dtype=_np.float64)
+            else:
+                theta = _np.arctan2(r, f)
+                b = _np.array([
+                    _np.sin(theta) * x / r,
+                    _np.sin(theta) * y / r,
+                    _np.cos(theta),
+                ], dtype=_np.float64)
+
+        elif self.projection_type in ("spherical", "equirectangular"):
+            lon = x * 2.0 * _np.pi
+            lat = -y * 2.0 * _np.pi
+            b = _np.array([
+                _np.cos(lat) * _np.sin(lon),
+                -_np.sin(lat),
+                _np.cos(lat) * _np.cos(lon),
+            ], dtype=_np.float64)
+
+        else:
+            b = _np.array([x, y, 1.0], dtype=_np.float64)
+
+        norm = _np.linalg.norm(b)
+        if norm < 1e-10:
+            return _np.array([0.0, 0.0, 1.0], dtype=_np.float64)
+        return b / norm
+
+
+    def project(self, point3d):
+        import numpy as _np
+        p = _np.array(point3d, dtype=_np.float64)
+        if abs(p[2]) < 1e-10:
+            return _np.array([0.0, 0.0], dtype=_np.float64)
+
+        if self.projection_type == "perspective":
+            f = float(self.focal)
+            return _np.array([f * p[0] / p[2], f * p[1] / p[2]], dtype=_np.float64)
+
+        else:
+            return _np.array([p[0]/p[2], p[1]/p[2]], dtype=_np.float64)
+
     def pixel_to_normalized_coordinates(self, point: numpy.ndarray) -> numpy.ndarray:
         """Pixel → undistorted normalised coords (2,)."""
         point = numpy.asarray(point, dtype=numpy.float64).ravel()
@@ -432,9 +500,14 @@ class Pose:
     # Internal helpers
     # ------------------------------------------------------------------ #
 
-    def get_rotation_matrix(self) -> numpy.ndarray:
-        """Rodrigues vector → 3×3 rotation matrix."""
-        R, _ = cv2.Rodrigues(self.rotation.astype(numpy.float64))
+    # def get_rotation_matrix(self) -> numpy.ndarray:
+    #     """Rodrigues vector → 3×3 rotation matrix."""
+    #     R, _ = cv2.Rodrigues(self.rotation.astype(numpy.float64))
+    #     return R
+
+    def get_rotation_matrix(self):
+        rot = numpy.array(self.rotation, dtype=numpy.float64)
+        R, _ = cv2.Rodrigues(rot)
         return R
 
     def set_rotation_matrix(self, R: numpy.ndarray):
@@ -445,65 +518,119 @@ class Pose:
     # Accessors
     # ------------------------------------------------------------------ #
 
-    def get_origin(self) -> numpy.ndarray:
-        """Camera centre in world coordinates:  C = -R^T * t"""
-        R = self.get_rotation_matrix()
-        return -(R.T @ self.translation)
+    # def get_origin(self) -> numpy.ndarray:
+    #     """Camera centre in world coordinates:  C = -R^T * t"""
+    #     R = self.get_rotation_matrix()
+    #     return -(R.T @ self.translation)
 
-    def set_origin(self, origin: numpy.ndarray):
+    def get_origin(self):
+        R = self.get_rotation_matrix()
+        t = numpy.array(self.translation, dtype=numpy.float64)
+        return -(R.T @ t)
+
+    def set_origin(self, origin):
         R = self.get_rotation_matrix()
         self.translation = -R @ numpy.array(origin, dtype=numpy.float64)
+
+    # def set_origin(self, origin: numpy.ndarray):
+    #     R = self.get_rotation_matrix()
+    #     self.translation = -R @ numpy.array(origin, dtype=numpy.float64)
+
+    def get_Rt(self):
+        R = self.get_rotation_matrix()
+        t = numpy.array(self.translation, dtype=numpy.float64)
+        return numpy.hstack([R, t.reshape(3, 1)])
 
     # ------------------------------------------------------------------ #
     # Transform
     # ------------------------------------------------------------------ #
 
-    def transform(self, point: numpy.ndarray) -> numpy.ndarray:
-        """World → camera:  X = R*P + t"""
+    # def transform(self, point: numpy.ndarray) -> numpy.ndarray:
+    #     """World → camera:  X = R*P + t"""
+    #     R = self.get_rotation_matrix()
+    #     return R @ numpy.array(point, dtype=numpy.float64) + self.translation
+
+    def transform(self, point):
         R = self.get_rotation_matrix()
-        return R @ numpy.array(point, dtype=numpy.float64) + self.translation
+        t = numpy.array(self.translation, dtype=numpy.float64)
+        return R @ numpy.array(point, dtype=numpy.float64) + t
 
-    def transform_many(self, points: numpy.ndarray) -> numpy.ndarray:
-        """World → camera for (N,3) array."""
+    # def transform_many(self, points: numpy.ndarray) -> numpy.ndarray:
+    #     """World → camera for (N,3) array."""
+    #     R      = self.get_rotation_matrix()
+    #     points = numpy.atleast_2d(numpy.array(points, dtype=numpy.float64))
+    #     return (R @ points.T).T + self.translation
+
+    def transform_many(self, points):
         R      = self.get_rotation_matrix()
+        t      = numpy.array(self.translation, dtype=numpy.float64)
         points = numpy.atleast_2d(numpy.array(points, dtype=numpy.float64))
-        return (R @ points.T).T + self.translation
+        return (R @ points.T).T + t
 
-    def transform_inverse(self, point: numpy.ndarray) -> numpy.ndarray:
-        """Camera → world:  P = R^T*(X - t)"""
+    # def transform_inverse(self, point: numpy.ndarray) -> numpy.ndarray:
+    #     """Camera → world:  P = R^T*(X - t)"""
+    #     R = self.get_rotation_matrix()
+    #     return R.T @ (numpy.array(point, dtype=numpy.float64) - self.translation)
+
+    def transform_inverse(self, point):
         R = self.get_rotation_matrix()
-        return R.T @ (numpy.array(point, dtype=numpy.float64) - self.translation)
+        t = numpy.array(self.translation, dtype=numpy.float64)
+        return R.T @ (numpy.array(point, dtype=numpy.float64) - t)
 
-    def transform_inverse_many(self, points: numpy.ndarray) -> numpy.ndarray:
+    # def transform_inverse_many(self, points: numpy.ndarray) -> numpy.ndarray:
+    #     R      = self.get_rotation_matrix()
+    #     points = numpy.atleast_2d(numpy.array(points, dtype=numpy.float64))
+    #     return (R.T @ (points - self.translation).T).T
+
+    def transform_inverse_many(self, points):
         R      = self.get_rotation_matrix()
+        t      = numpy.array(self.translation, dtype=numpy.float64)
         points = numpy.atleast_2d(numpy.array(points, dtype=numpy.float64))
-        return (R.T @ (points - self.translation).T).T
-
+        return (R.T @ (points - t).T).T
+    
     # ------------------------------------------------------------------ #
     # Composition / inversion
     # ------------------------------------------------------------------ #
 
-    def compose(self, other: "Pose") -> "Pose":
-        """self ∘ other:  applies other first, then self."""
+    # def compose(self, other: "Pose") -> "Pose":
+    #     """self ∘ other:  applies other first, then self."""
+    #     R1 = self.get_rotation_matrix()
+    #     R2 = other.get_rotation_matrix()
+    #     R  = R1 @ R2
+    #     t  = R1 @ other.translation + self.translation
+    #     p  = Pose()
+    #     p.set_rotation_matrix(R)
+    #     p.translation = t
+    #     return p
+
+    def compose(self, other):
         R1 = self.get_rotation_matrix()
         R2 = other.get_rotation_matrix()
         R  = R1 @ R2
-        t  = R1 @ other.translation + self.translation
+        t  = R1 @ numpy.array(other.translation, dtype=numpy.float64) + numpy.array(self.translation, dtype=numpy.float64)
         p  = Pose()
         p.set_rotation_matrix(R)
         p.translation = t
         return p
 
-    def inverse(self) -> "Pose":
-        """Invert the pose."""
-        R    = self.get_rotation_matrix()
-        R_inv = R.T
-        t_inv = -R_inv @ self.translation
-        p = Pose()
-        p.set_rotation_matrix(R_inv)
-        p.translation = t_inv
-        return p
+    # def inverse(self) -> "Pose":
+    #     """Invert the pose."""
+    #     R    = self.get_rotation_matrix()
+    #     R_inv = R.T
+    #     t_inv = -R_inv @ self.translation
+    #     p = Pose()
+    #     p.set_rotation_matrix(R_inv)
+    #     p.translation = t_inv
+    #     return p
 
+    def inverse(self):
+        p = Pose()
+        R = self.get_rotation_matrix()
+        t = numpy.array(self.translation, dtype=numpy.float64)
+        p.rotation = list((-R.T @ t))
+        p.translation = list(-(R.T @ t))
+        return p
+    
     def __repr__(self):
         return f"Pose(r={self.rotation}, t={self.translation})"
 

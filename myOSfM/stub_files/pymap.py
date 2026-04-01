@@ -498,6 +498,14 @@ class Shot:
     @property
     def rig_camera_id(self):
         return self._rig_camera.id if self._rig_camera else None
+    
+    @property
+    def rig_camera(self):
+        return self._rig_camera
+
+    @property  
+    def rig_instance(self):
+        return self._rig_instance
 
     def set_rig(self, rig_instance: RigInstance, rig_camera: RigCamera):
         self._rig_instance = rig_instance

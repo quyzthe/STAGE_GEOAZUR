@@ -1,3 +1,4 @@
-dataset runtime: 0.152105 seconds
-split runtime: 0.0 seconds
-merge runtime: 0.0 seconds
+dataset runtime: 0.130334 seconds
+split runtime: 0.000994 seconds
+merge runtime: 0.000515 seconds
+opensfm runtime: 221.385402 seconds

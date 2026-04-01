@@ -929,31 +929,7 @@ def camera_to_json(camera):
 #         raise NotImplementedError
 
 
-def shot_to_json(shot):
-    """
-    Write shot to a json object
-    """
-    obj: Dict[str, Any] = {
-        "rotation": list(shot.pose.rotation),
-        "translation": list(shot.pose.translation),
-        "camera": shot.camera.id,
-    }
-
-    if shot.metadata is not None:
-        obj.update(pymap_metadata_to_json(shot.metadata))
-    if shot.mesh is not None:
-        obj["vertices"] = [list(vertice) for vertice in shot.mesh.vertices]
-        obj["faces"] = [list(face) for face in shot.mesh.faces]
-    if hasattr(shot, "scale"):
-        obj["scale"] = shot.scale
-    if hasattr(shot, "covariance"):
-        obj["covariance"] = shot.covariance.tolist()
-    if hasattr(shot, "merge_cc"):
-        obj["merge_cc"] = shot.merge_cc
-    return obj
-
-
-# def shot_to_json(shot: pymap.Shot) -> Dict[str, Any]:
+# def shot_to_json(shot):
 #     """
 #     Write shot to a json object
 #     """
@@ -976,7 +952,37 @@ def shot_to_json(shot):
 #         obj["merge_cc"] = shot.merge_cc
 #     return obj
 
-def rig_instance_to_json(rig_instance):
+
+def shot_to_json(shot: pymap.Shot) -> Dict[str, Any]:
+    """
+    Write shot to a json object
+    """
+    obj: Dict[str, Any] = {
+        "rotation": list(shot.pose.rotation),
+        "translation": list(shot.pose.translation),
+        "camera": shot.camera.id,
+    }
+
+    if shot.metadata is not None:
+        obj.update(pymap_metadata_to_json(shot.metadata))
+    if shot.mesh is not None:
+        obj["vertices"] = [list(vertice) for vertice in shot.mesh.vertices]
+        obj["faces"] = [list(face) for face in shot.mesh.faces]
+    if hasattr(shot, "scale"):
+        obj["scale"] = shot.scale
+    # if hasattr(shot, "covariance"):
+    #     obj["covariance"] = shot.covariance.tolist()
+
+    if hasattr(shot, "covariance") and shot.covariance is not None:
+        obj["covariance"] = shot.covariance.tolist()
+
+    if hasattr(shot, "merge_cc"):
+        obj["merge_cc"] = shot.merge_cc
+    return obj
+
+
+
+def rig_instance_to_json(rig_instance: pymap.RigInstance) -> Dict[str, Any]:
     """
     Write a rig instance to a json object
     """
@@ -986,19 +992,10 @@ def rig_instance_to_json(rig_instance):
         "rig_camera_ids": rig_instance.rig_camera_ids,
     }
 
-# def rig_instance_to_json(rig_instance: pymap.RigInstance) -> Dict[str, Any]:
-#     """
-#     Write a rig instance to a json object
-#     """
-#     return {
-#         "translation": list(rig_instance.pose.translation),
-#         "rotation": list(rig_instance.pose.rotation),
-#         "rig_camera_ids": rig_instance.rig_camera_ids,
-#     }
 
 
 
-def rig_camera_to_json(rig_camera):
+def rig_camera_to_json(rig_camera: pymap.RigCamera) -> Dict[str, Any]:
     """
     Write a rig camera to a json object
     """
@@ -1008,18 +1005,10 @@ def rig_camera_to_json(rig_camera):
     }
     return obj
 
-# def rig_camera_to_json(rig_camera: pymap.RigCamera) -> Dict[str, Any]:
-#     """
-#     Write a rig camera to a json object
-#     """
-#     obj = {
-#         "rotation": list(rig_camera.pose.rotation),
-#         "translation": list(rig_camera.pose.translation),
-#     }
-#     return obj
 
 
-def pymap_metadata_to_json(metadata):
+
+def pymap_metadata_to_json(metadata: pymap.ShotMeasurements) -> Dict[str, Any]:
     obj = {}
     if metadata.orientation.has_value:
         obj["orientation"] = metadata.orientation.value
@@ -1045,35 +1034,11 @@ def pymap_metadata_to_json(metadata):
         obj["skey"] = metadata.sequence_key.value
     return obj
 
-# def pymap_metadata_to_json(metadata: pymap.ShotMeasurements) -> Dict[str, Any]:
-#     obj = {}
-#     if metadata.orientation.has_value:
-#         obj["orientation"] = metadata.orientation.value
-#     if metadata.capture_time.has_value:
-#         obj["capture_time"] = metadata.capture_time.value
-#     if metadata.gps_accuracy.has_value:
-#         obj["gps_dop"] = metadata.gps_accuracy.value
-#     if metadata.gps_position.has_value:
-#         obj["gps_position"] = list(metadata.gps_position.value)
-#     if metadata.gravity_down.has_value:
-#         obj["gravity_down"] = list(metadata.gravity_down.value)
-#     if metadata.compass_angle.has_value and metadata.compass_accuracy.has_value:
-#         obj["compass"] = {
-#             "angle": metadata.compass_angle.value,
-#             "accuracy": metadata.compass_accuracy.value,
-#         }
-#     else:
-#         if metadata.compass_angle.has_value:
-#             obj["compass"] = {"angle": metadata.compass_angle.value}
-#         elif metadata.compass_accuracy.has_value:
-#             obj["compass"] = {"accuracy": metadata.compass_accuracy.value}
-#     if metadata.sequence_key.has_value:
-#         obj["skey"] = metadata.sequence_key.value
-#     return obj
 
 
 
-def json_to_pymap_metadata(obj):
+
+def json_to_pymap_metadata(obj: Dict[str, Any]) -> pymap.ShotMeasurements:
     metadata = pymap.ShotMeasurements()
     if obj.get("orientation") is not None:
         metadata.orientation.value = obj.get("orientation")
@@ -1096,37 +1061,6 @@ def json_to_pymap_metadata(obj):
     return metadata
 
 
-# def json_to_pymap_metadata(obj: Dict[str, Any]) -> pymap.ShotMeasurements:
-#     metadata = pymap.ShotMeasurements()
-#     if obj.get("orientation") is not None:
-#         metadata.orientation.value = obj.get("orientation")
-#     if obj.get("capture_time") is not None:
-#         metadata.capture_time.value = obj.get("capture_time")
-#     if obj.get("gps_dop") is not None:
-#         metadata.gps_accuracy.value = obj.get("gps_dop")
-#     if obj.get("gps_position") is not None:
-#         metadata.gps_position.value = obj.get("gps_position")
-#     if obj.get("skey") is not None:
-#         metadata.sequence_key.value = obj.get("skey")
-#     if obj.get("gravity_down") is not None:
-#         metadata.gravity_down.value = obj.get("gravity_down")
-#     if obj.get("compass") is not None:
-#         compass = obj.get("compass")
-#         if "angle" in compass:
-#             metadata.compass_angle.value = compass["angle"]
-#         if "accuracy" in compass:
-#             metadata.compass_accuracy.value = compass["accuracy"]
-#     return metadata
-
-
-def point_to_json(point):
-    """
-    Write a point to a json object
-    """
-    return {
-        "color": list(point.color.astype(float)),
-        "coordinates": list(point.coordinates),
-    }
 
 # def point_to_json(point: pymap.Landmark) -> Dict[str, Any]:
 #     """
@@ -1137,8 +1071,20 @@ def point_to_json(point):
 #         "coordinates": list(point.coordinates),
 #     }
 
+def point_to_json(point):
+    import numpy as np
+    color = point.color
+    if not isinstance(color, np.ndarray):
+        color = np.array(color, dtype=float)
+    coords = point.coordinates
+    if not isinstance(coords, np.ndarray):
+        coords = np.array(coords, dtype=float)
+    return {
+        "color": list(color.astype(float)),
+        "coordinates": list(coords),
+    }
 
-def reconstruction_to_json(reconstruction):
+def reconstruction_to_json(reconstruction: types.Reconstruction) -> Dict[str, Any]:
     """
     Write a reconstruction to a json object
     """
@@ -1188,95 +1134,31 @@ def reconstruction_to_json(reconstruction):
 
     return obj
 
-# def reconstruction_to_json(reconstruction: types.Reconstruction) -> Dict[str, Any]:
-#     """
-#     Write a reconstruction to a json object
-#     """
-#     obj = {"cameras": {}, "shots": {}, "points": {}, "biases": {}}
 
-#     # Extract cameras
-#     for camera in reconstruction.cameras.values():
-#         obj["cameras"][camera.id] = camera_to_json(camera)
-
-#     # Extract cameras biases
-#     for camera_id, bias in reconstruction.biases.items():
-#         obj["biases"][camera_id] = bias_to_json(bias)
-
-#     # Extract rig models
-#     if len(reconstruction.rig_cameras):
-#         obj["rig_cameras"] = {}
-#     for rig_camera in reconstruction.rig_cameras.values():
-#         obj["rig_cameras"][rig_camera.id] = rig_camera_to_json(rig_camera)
-#     if len(reconstruction.rig_instances):
-#         obj["rig_instances"] = {}
-#     for rig_instance in reconstruction.rig_instances.values():
-#         obj["rig_instances"][rig_instance.id] = rig_instance_to_json(rig_instance)
-
-#     # Extract shots
-#     for shot in reconstruction.shots.values():
-#         obj["shots"][shot.id] = shot_to_json(shot)
-
-#     # Extract points
-#     for point in reconstruction.points.values():
-#         obj["points"][point.id] = point_to_json(point)
-
-#     # Extract pano_shots
-#     if hasattr(reconstruction, "pano_shots"):
-#         if len(reconstruction.pano_shots) > 0:
-#             obj["pano_shots"] = {}
-#             for shot in reconstruction.pano_shots.values():
-#                 obj["pano_shots"][shot.id] = shot_to_json(shot)
-
-#     # Extract reference topocentric frame
-#     if reconstruction.reference:
-#         ref = reconstruction.reference
-#         obj["reference_lla"] = {
-#             "latitude": ref.lat,
-#             "longitude": ref.lon,
-#             "altitude": ref.alt,
-#         }
-
-#     return obj
 
 
 def reconstructions_to_json(
-    reconstructions,
-):
+    reconstructions: Iterable[types.Reconstruction],
+) -> List[Dict[str, Any]]:
     """
     Write all reconstructions to a json object
     """
     return [reconstruction_to_json(i) for i in reconstructions]
 
-# def reconstructions_to_json(
-#     reconstructions: Iterable[types.Reconstruction],
-# ) -> List[Dict[str, Any]]:
-#     """
-#     Write all reconstructions to a json object
-#     """
-#     return [reconstruction_to_json(i) for i in reconstructions]
 
 
-def cameras_to_json(cameras):
+
+def cameras_to_json(cameras: Dict[str, pygeometry.Camera]) -> Dict[str, Dict[str, Any]]:
     """
     Write cameras to a json object
     """
     obj = {}
     for camera in cameras.values():
-        print(f"Camera projection type: {camera.projection_type}")
         obj[camera.id] = camera_to_json(camera)
     return obj
 
-# def cameras_to_json(cameras: Dict[str, pygeometry.Camera]) -> Dict[str, Dict[str, Any]]:
-#     """
-#     Write cameras to a json object
-#     """
-#     obj = {}
-#     for camera in cameras.values():
-#         obj[camera.id] = camera_to_json(camera)
-#     return obj
 
-
-# def bias_to_json(bias):
+# def bias_to_json(bias: pygeometry.Similarity) -> Dict[str, Any]:
 #     return {
 #         "rotation": list(bias.rotation),
 #         "translation": list(bias.translation),
@@ -1284,10 +1166,12 @@ def cameras_to_json(cameras):
 #     }
 
 def bias_to_json(bias: pygeometry.Similarity) -> Dict[str, Any]:
+    if bias is None:
+        return {"rotation": [0.0, 0.0, 0.0], "translation": [0.0, 0.0, 0.0], "scale": 1.0}
     return {
         "rotation": list(bias.rotation),
         "translation": list(bias.translation),
-        "scale": bias.scale,
+        "scale": float(bias.scale),
     }
 
 

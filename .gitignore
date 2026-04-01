@@ -4,3 +4,5 @@ test.ipynb
 /demo_results/
 /.vscode/
 /myenv/
+/TEST_ODM/*
+/fix_camera_bearing.py
