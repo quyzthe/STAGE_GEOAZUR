@@ -639,7 +639,7 @@ class OSFMContext:
         osfm_report_path = self.path("stats", "report.pdf")
         if not os.path.exists(report_path) or rerun:
             data = DataSet(self.opensfm_project_path)
-            pdf_report = report.Report(data, odm_stats)
+            pdf_report = report.Report(data)
             pdf_report.generate_report()
             pdf_report.save_report("report.pdf")
             

@@ -152,27 +152,14 @@ def run(cmd, env_paths=[context.superbuild_bin_path], env_vars={}, packages_path
 
     # p = subprocess.Popen(cmd, shell=True, env=env, start_new_session=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     
-    # p = subprocess.Popen(
-    #     cmd,
-    #     shell=True,
-    #     env=env,
-    #     start_new_session=True
-    # )
-    
-    # p.wait()
-
     p = subprocess.Popen(
-    cmd,
-    shell=True,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    text=True
+        cmd,
+        shell=True,
+        env=env,
+        start_new_session=True
     )
-
-    out, err = p.communicate()
-
-    # if "mesh" in cmd:
-    #     os._exit(0)
+    
+    p.wait()
 
     # print(f"[DEBUG] subprocess PID = {p.pid}")
     # running_subprocesses.append(p)
