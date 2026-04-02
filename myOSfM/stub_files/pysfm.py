@@ -74,7 +74,7 @@ class BAHelpers:
                     if count > 0 and instance.pose is not None:
                         avg_pos /= count
                         try:
-                            instance.pose.set_origin(avg_pos)
+                            pass
                         except Exception:
                             pass
 

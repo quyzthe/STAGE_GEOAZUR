@@ -150,32 +150,33 @@ def run(cmd, env_paths=[context.superbuild_bin_path], env_vars={}, packages_path
     import time
     t_start = time.time()
 
-    # p = subprocess.Popen(cmd, shell=True, env=env, start_new_session=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(cmd, shell=True, env=env, start_new_session=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     
-    p = subprocess.Popen(
-        cmd,
-        shell=True,
-        env=env,
-        start_new_session=True
-    )
+    # p = subprocess.Popen(
+    #     cmd,
+    #     shell=True,
+    #     env=env,
+    #     start_new_session=True
+    # )
+    
+    # p.wait()
 
-    p.wait()
-    
+    # if "mesh" in cmd:
+    #     os._exit(0)
+
     # print(f"[DEBUG] subprocess PID = {p.pid}")
     # running_subprocesses.append(p)
     # print(f"[DEBUG] running_subprocesses count = {len(running_subprocesses)}")
 
-    # lines = deque()
-    # line_count = 0
-    # for line in io.TextIOWrapper(p.stdout):
+    lines = deque()
+    line_count = 0
+    for line in io.TextIOWrapper(p.stdout):
 
-    #     # print(line, end="")
-    #     line_count += 1
-    #     lines.append(line.strip())
-    #     # print(f"Number of lines: {len(lines)}")W
-    #     # print(f"What is lines? {line}")
-    #     if len(lines) == 50:
-    #         lines.popleft()
+        line_count += 1
+        lines.append(line.strip())
+
+        if len(lines) == 10:
+            lines.popleft()
 
     # print(f"[DEBUG] subprocess stdout finished, total lines = {line_count}")
 

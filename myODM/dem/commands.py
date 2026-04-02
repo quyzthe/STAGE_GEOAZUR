@@ -83,6 +83,10 @@ def create_dem(input_point_cloud, dem_type, output_type='max', radiuses=['0.56']
         'classification': 2 if dem_type == 'dtm' else -1,
         'tileSize': max_tile_size
     }
+
+    if shutil.which('renderdem') is None:
+        raise RuntimeError("renderdem not found in PATH")
+    
     system.run('renderdem "{input}" '
                 '--outdir "{outdir}" '
                 '--output-type {outputType} '

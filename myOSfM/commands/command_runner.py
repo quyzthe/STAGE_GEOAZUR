@@ -58,6 +58,7 @@ from myOSfM.dataset import DataSet
 
 # for debug only
 import inspect
+import os
 
 def command_runner(
     all_commands_types: List[ModuleType],
@@ -112,6 +113,7 @@ def command_runner(
         sys.exit(1)
 
     selected_command = command_map[args.command]
+
 
     print(f"[DEBUG] Selected command: {selected_command.name}", flush=True)
     print("[DEBUG] Command class:", type(selected_command))

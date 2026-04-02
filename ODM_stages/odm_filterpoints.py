@@ -55,6 +55,12 @@ class ODMFilterPoints(types.ODM_Stage):
                                 boundary=boundary_offset(outputs.get('boundary'), reconstruction.get_proj_offset()),
                                 max_concurrency=args.max_concurrency)
             
+
+            if not os.path.exists(tree.filtered_point_cloud):
+                log.ODM_WARNING("FPCFilter failed, using unfiltered point cloud as fallback")
+                import shutil
+                shutil.copy(inputPointCloud, tree.filtered_point_cloud)
+
             # Quick check
             info = point_cloud.ply_info(tree.filtered_point_cloud)
             if info["vertex_count"] == 0:

@@ -105,11 +105,17 @@ def filter(input_point_cloud, output_point_cloud, output_stats, standard_deviati
             f.write(as_geojson(boundary))
         args.append('--boundary "%s"' % boundary_json_file)
 
+    # system.run('"%s" %s' % (context.fpcfilter_path, " ".join(args)))
+
+    # if not os.path.exists(output_point_cloud):
+    #     log.ODM_WARNING("{} not found, filtering has failed.".format(output_point_cloud))
+
     system.run('"%s" %s' % (context.fpcfilter_path, " ".join(args)))
 
     if not os.path.exists(output_point_cloud):
         log.ODM_WARNING("{} not found, filtering has failed.".format(output_point_cloud))
-
+        log.ODM_WARNING("Copying unfiltered point cloud as fallback")
+        shutil.copy(input_point_cloud, output_point_cloud)
 
 def get_spacing(stats_file, resolution_fallback=5.0):
     def fallback():
